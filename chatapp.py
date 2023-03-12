@@ -1,11 +1,11 @@
 import speech_recognition as sr
 import openai
 from gtts import gTTS
-import os
 from playsound import playsound
+import os
 
 # Initialize the OpenAI API
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Initialize the recognizer class from the speech_recognition library
 r = sr.Recognizer()
@@ -36,14 +36,12 @@ while True:
         break 
 
     # Generate a response using the OpenAI API
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=f"{user_input}",
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        temperature=0.95,
-    ).get("choices")[0].get("text")
+    response = openai.ChatCompletion.create(
+  model="gpt-3.5-turbo",
+  messages=[
+    {"role": "user", "content": user_input}
+  ]
+)
+    print(f"Ada: {response.choices[0].message.content}")
+    speak_response(response.choices[0].message.content)
 
-    print(f"Ada: {response}")
-    speak_response(response)
